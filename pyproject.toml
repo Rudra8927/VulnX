@@ -1,0 +1,16 @@
+[project]
+name = "vulnx"
+version = "1.1.0"
+description = "Low-impact website security assessment toolkit"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

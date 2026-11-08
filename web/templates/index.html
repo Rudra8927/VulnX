@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VulnX Security Console</title><link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="shell">
+<aside><div class="brand">VULNX<small>SECURITY CONSOLE</small></div>
+<div class="nav active">◈ &nbsp; Overview</div><div class="nav">⌁ &nbsp; Website assessment</div>
+<div class="note">AUTHORIZED SECURITY TESTING<br><span>Passive &amp; low-impact checks</span></div></aside>
+<main>
+<header><div><small>SECURITY OPERATIONS / WEB</small><h1>Assessment overview</h1>
+<p>Identify configuration weaknesses and improve your website's security posture.</p></div>
+<label class="status">● ENGINE READY</label></header>
+<section class="panel"><small>NEW ASSESSMENT</small><h2>Target configuration <span class="tag">SAFE MODE</span></h2>
+<div class="form"><input id="target" placeholder="https://your-authorized-domain.com">
+<button id="scan">START SCAN ↗</button></div>
+<label class="confirm"><input id="auth" type="checkbox"> I own this website or have explicit authorization to assess it.</label>
+<p id="message">Public targets only. Requests are limited and non-exploitative.</p></section>
+<section class="stats">
+<div class="stat"><small>FINDINGS</small><strong id="total">—</strong><span>Current assessment</span></div>
+<div class="stat"><small>HIGH / CRITICAL</small><strong id="high">—</strong><span>Priority review</span></div>
+<div class="stat"><small>PAGES REVIEWED</small><strong id="pages">—</strong><span>Same-origin crawl</span></div>
+<div class="stat"><small>SCAN STATUS</small><strong id="state">READY</strong><span>Engine status</span></div></section>
+<section class="panel"><small>RESULTS</small><h2>Security findings <span id="targetLabel"></span></h2>
+<div class="tablewrap"><table><thead><tr><th>SEVERITY</th><th>FINDING</th><th>CATEGORY</th><th>LOCATION / EVIDENCE</th><th>REMEDIATION</th></tr></thead>
+<tbody id="findings"><tr><td colspan="5">Run an authorized assessment to view findings.</td></tr></tbody></table></div></section>
+<section class="panel"><small>SCAN HISTORY</small><h2>Recent assessments</h2><div id="history">No previous scans.</div></section>
+<footer>VulnX v1.1 · Authorized assessment only · No exploit payloads</footer>
+</main></div><script src="/static/app.js"></script></body></html>

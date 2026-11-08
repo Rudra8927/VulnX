@@ -1,75 +1,130 @@
-# VulnX — Advanced Web Vulnerability Scanner
+# VulnX
 
-VulnX is a Python-based web security assessment tool designed for cybersecurity learners, ethical hackers, and security researchers. It helps identify potential website security weaknesses and common misconfigurations through automated checks, web reconnaissance, and a same-origin crawler.
+**Low-impact website security assessment toolkit**
 
-## Features
+VulnX is a cross-platform Python tool for developers and authorized security testers. It performs bounded, non-exploitative checks and provides a dark FastAPI dashboard, CLI, SQLite scan history, and exportable reports.
 
-- DNS and TLS information gathering
-- HTTP security-header analysis
-- Cookie security-attribute checks
-- Bounded same-origin website crawling
-- Checks for common exposed files and endpoints
-- SQLite-based scan history
-- JSON, CSV, and HTML report generation
-- Command-line interface (CLI)
-- FastAPI-powered web dashboard
-- Designed for Linux and Windows
+> **Authorization required:** assess only systems you own or have explicit written permission to test. Follow the agreed scope and applicable laws.
 
-## Technology Stack
+## Capabilities
 
-Python · FastAPI · HTTPX · SQLite · Uvicorn · dnspython
+- DNS A-record lookup and TLS certificate metadata
+- HTTP security-header and cookie-attribute checks
+- Bounded same-origin crawler using GET requests
+- Indicators for a small set of commonly exposed resources
+- Severity-ranked findings
+- JSON, CSV, HTML, and optional PDF reports
+- FastAPI dashboard and local SQLite history
+- Linux, Kali Linux, and Windows support
 
-## Getting Started
+VulnX does not attempt password guessing, authentication bypass, exploit payload injection, destructive testing, denial of service, or arbitrary port scanning.
 
-Clone the repository:
+## Project structure
 
-```bash
+~~~text
+VulnX/
+├── cli/                  # CLI implementation
+├── config/               # Configuration notes
+├── core/                 # Scanner, scope, crawler, persistence
+├── docs/                 # Architecture and safe-use guide
+├── modules/              # Individual assessment modules
+├── reports/              # Report generation
+├── storage/              # Local database (Git-ignored)
+├── tests/                # Automated tests
+├── web/
+│   ├── static/           # Dashboard assets
+│   ├── templates/        # Dashboard HTML
+│   └── app.py            # FastAPI application
+├── .github/workflows/    # CI
+├── .env.example
+├── .gitignore
+├── pyproject.toml
+├── requirements.txt
+├── run.py
+└── cli.py
+~~~
+
+## Requirements
+
+- Python 3.10+
+- Network access to resolve and reach an authorized public target
+
+## Installation
+
+### Linux / Kali Linux
+
+~~~bash
 git clone https://github.com/Rudra8927/VulnX.git
 cd VulnX
-```
-
-Create a virtual environment:
-
-```bash
-python -m venv .venv
-```
-
-Activate it on Linux / Kali Linux:
-
-```bash
+python3 -m venv .venv
 source .venv/bin/activate
-```
-
-Or on Windows PowerShell:
-
-```powershell
-.venv\Scripts\Activate.ps1
-```
-
-Install dependencies:
-
-```bash
+python -m pip install --upgrade pip
 pip install -r requirements.txt
-```
+cp .env.example .env
+~~~
 
-Start the web dashboard from the project root:
+### Windows PowerShell
 
-```bash
+~~~powershell
+git clone https://github.com/Rudra8927/VulnX.git
+Set-Location VulnX
+py -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+Copy-Item .env.example .env
+~~~
+
+## Start the dashboard
+
+~~~bash
+python run.py
+~~~
+
+Open http://127.0.0.1:8000. Keep the dashboard bound to localhost unless you have secured the deployment environment.
+
+Alternative:
+
+~~~bash
 uvicorn web.app:app --host 127.0.0.1 --port 8000
-```
+~~~
 
-Open http://127.0.0.1:8000 in your browser.
+## CLI usage
 
-Refer to the CLI help and configuration files for the options supported by your installed version.
+~~~bash
+python cli.py https://your-authorized-domain.example --confirm-authorized
+~~~
 
-## Responsible Use
+Add --out reports to choose a report directory.
 
-Only scan websites and systems that you own or have explicit permission to assess. Respect the agreed scope, applicable laws, and target service limits. VulnX is intended for educational and authorized security testing. Scan results are indicators for further validation, not proof that a system is secure or vulnerable.
+## Configuration
 
-## Disclaimer
+Copy .env.example to .env and adjust conservative limits only when appropriate.
 
-This project is provided for educational and research purposes. The author is not responsible for misuse, unauthorized testing, service disruption, or damage arising from use of this tool.
+| Variable | Default | Purpose |
+|---|---:|---|
+| VULNX_HOST | 127.0.0.1 | Dashboard bind address |
+| VULNX_PORT | 8000 | Dashboard port |
+| VULNX_MAX_PAGES | 15 | Maximum pages crawled |
+| VULNX_MAX_DEPTH | 2 | Crawl depth |
+| VULNX_TIMEOUT | 8 | Network timeout in seconds |
+| VULNX_CONCURRENCY | 2 | Concurrent request limit |
 
-## Author
+Reports are written to reports/ and SQLite history to storage/vulnx.db. Local secrets, databases, virtual environments, and generated reports are excluded from Git.
 
-**Rudra8927** · [GitHub Profile](https://github.com/Rudra8927)
+## Tests
+
+~~~bash
+python -m pip install pytest
+python -m pytest -q
+~~~
+
+## Limitations
+
+Findings are indicators, not proof of exploitability. Checks are unauthenticated and may miss routes or produce false positives. VulnX is not a replacement for professional penetration testing, source review, or manual validation.
+
+Read docs/SAFE_USE.md and docs/ARCHITECTURE.md before use.
+
+## License
+
+MIT. See LICENSE.
